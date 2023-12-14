@@ -15,7 +15,8 @@ from bridge.context import ContextType
 from bridge.reply import Reply, ReplyType
 from common.log import logger
 from common.token_bucket import TokenBucket
-from config import conf, load_config, config
+from config import conf, load_config, config, global_config
+from auto_share_token import Share_token_config
 
 
 # OpenAI对话模型API (可用)
@@ -143,6 +144,9 @@ class ChatGPTBot(Bot, OpenAIImage):
                 }
         except Exception as e:
             need_retry = retry_count < 2
+            share_token = Share_token_config()
+            load_config()
+            super().__init__()
             result = {"completion_tokens": 0, "content": "我现在有点累了，等会再来吧"}
             if isinstance(e, openai.error.RateLimitError):
                 logger.warn("[CHATGPT] RateLimitError: {}".format(e))
@@ -166,6 +170,7 @@ class ChatGPTBot(Bot, OpenAIImage):
             else:
                 logger.exception("[CHATGPT] Exception: {}".format(e))
                 need_retry = False
+                load_config()
                 self.sessions.clear_session(session.session_id)
 
             if need_retry:

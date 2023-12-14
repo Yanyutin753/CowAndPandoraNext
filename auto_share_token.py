@@ -1,13 +1,7 @@
-from os import path
-
 import requests
 import re
-
-from pandora.openai.auth import Auth0
-
 import json
 import os
-
 
 def Share_token_config():
     # 获取当前代码文件的绝对路径
@@ -19,56 +13,28 @@ def Share_token_config():
     # 打开并读取config.json文件
     with open(config_path, 'r') as file:
         config_data = json.load(file)
+        TokensTool_url = config_data["TokensTool_url"]
 
-    username = config_data["open_ai_name"]
-    password = config_data["open_ai_password"]
-    unique_name = config_data["unique_name"]
-
-    proxy = config_data["proxy"]  # 可以链接到v2rayN的http代理，用于访问openai
-    expires_in = 0
-
-    print('Login begin: {}'.format(username))
-
-    token_info = {
-        'token': 'None',
-        'share_token': 'None',
-    }
-
-
-    try:
-        token_info['token'] = Auth0(username, password, proxy).auth(False)
-        print('Login success: {}'.format(username))
-    except Exception as e:
-        err_str = str(e).replace('\n', '').replace('\r', '').strip()
-        print('Login failed: {}, {}'.format(username, err_str))
-        token_info['token'] = err_str
-
-    data = {
-        'unique_name': unique_name,
-        'access_token': token_info['token'],
-        'expires_in': expires_in,
-        'show_conversations': True,
-    }
-    resp = requests.post('https://ai.fakeopen.com/token/register', data=data)
+    resp = requests.get(TokensTool_url)
     if resp.status_code == 200:
-        token_info['share_token'] = resp.json()['token_key']
-        print('share token: {}'.format(token_info['share_token']))
+        pool_token = resp.json()['data']
+        print('share token: {}'.format(pool_token))
     else:
         err_str = resp.text.replace('\n', '').replace('\r', '').strip()
         print('share token failed: {}'.format(err_str))
-        token_info['share_token'] = err_str
+        pool_token = err_str
 
-    if re.match(r'^(fk-|pk-)', token_info['share_token']):
+    if re.match(r'^(fk-|pk-)', pool_token):
 
         with open(config_path, 'r') as file:
             config_data = json.load(file)
 
-        config_data["open_ai_api_key"] = token_info['share_token']
+        config_data["open_ai_api_key"] = pool_token
 
         # 将更新后的内容写回config.json文件
         with open(config_path, 'w') as file:
-            json.dump(config_data, file, indent=4)
+            json.dump(config_data, file, indent=4, ensure_ascii=False)
 
-        print(f"open_ai_api_key has been updated to: {token_info['share_token']}")
+        print(f"open_ai_api_key has been updated to: {pool_token}")
 
-    return token_info['share_token']
+    return pool_token

@@ -74,18 +74,6 @@ ADMIN_COMMANDS = {
         "alias": ["update_token", "更新chatgpt"],
         "desc": "更新chatgpt",
     },
-    "show_ci": {
-        "alias": ["show_ci", "查看自定义背景和提示词"],
-        "desc": "查看自定义背景和提示词",
-    },
-    "update_ci_user": {
-        "alias": ["update_ci_user", "更新自定义提示词"],
-        "desc": "更新自定义提示词",
-    },
-    "update_ci_model": {
-        "alias": ["update_ci_model", "更新自定义提示词"],
-        "desc": "更新自定义提示词",
-    },
     "stop": {
         "alias": ["stop", "暂停服务"],
         "desc": "暂停服务",
@@ -355,22 +343,6 @@ class Godcmd(Plugin):
                             print("开始修改分享token")
                             share_token = Share_token_config()
                             ok, result = True, f"分享token已修改完成{share_token}"
-                        elif cmd == "show_ci":
-                            print("开始获取CI值")
-                            about_user_message, about_model_message = get_messages()
-                            ok, result = True, f"""自定义背景为：{about_user_message}----自定义提示词为：{about_model_message}"""
-                        elif cmd == "update_ci_user":
-                            print("开始更新自定义背景")
-                            about_user_message = args[0]
-                            modify_messages_user(about_user_message)
-                            about_user_message, about_model_message = get_messages()
-                            ok, result = True, f"""背景词为：{about_user_message}"""
-                        elif cmd == "update_ci_model":
-                            print("开始更新自定义背景")
-                            about_model_message = args[0]
-                            modify_messages_model(about_model_message)
-                            about_user_message, about_model_message = get_messages()
-                            ok, result = True, f"""自定义提示词为：{about_model_message}"""
                         elif cmd == "reconf":
                             load_config()
                             ok, result = True, "配置已重载"
