@@ -10,16 +10,10 @@ from common.log import logger
 # 将所有可用的配置项写在字典里, 请使用小写字母
 # 此处的配置值无实际意义，程序不会读取此处的配置，仅用于提示格式，请将配置加入到config.json中
 available_setting = {
-    # chatgpt的账户密码，以及share_token的唯一名称
-    "open_ai_name": "",
-    "open_ai_password": "",
-    "unique_name": "",
     # openai api配置
     "open_ai_api_key": "",  # openai api key
-    # openai apibase，PandoraNext的接口地址（加/v1）
-    "open_ai_api_base": "",
-    # TokensTool_url，用于刷新pool_token
-    "TokensTool_url": "",
+    "open_ai_api_base": "", # PandoraNext的接口地址（加/v1）
+    "TokensTool_url": "",   # 用于刷新pool_token
     "proxy": "",  # openai使用的代理
     # chatgpt模型， 当use_azure_chatgpt为true时，其名称为Azure上model deployment名称
     "model": "gpt-3.5-turbo",  # 还支持 gpt-3.5-turbo-16k, gpt-4, wenxin, xunfei
