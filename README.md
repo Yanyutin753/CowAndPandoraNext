@@ -1,15 +1,8 @@
 # 简介
 
 ## 目前实现功能：
-- [x] 在原项目基础上，添加了通过chatgpt账户密码的使用方式。
-- [x] 更新chatgpt登入状态，避免掉线：1.在微信中通过`#auth password`命令，在私聊中进行管理员身份认证；2.通过`#update_token` 命令更新。
-- [x] 在微信中通过`#show_ci` 命令，查看添加到chatgpt账户的自定义提示词。
-- [x] 在微信中通过`#update_ci_user` 命令，添加自定义背景到chatgpt账户。
-- [x] 在微信中通过`#update_ci_model` 命令，更新自定义提示词到chatgpt账户。
-- [ ] 在微信中通过`#chatgpt`命令，更换绑定的chatgpt账户密码。
-- [ ] 添加数据库功能，记录所有对话数据。
-- [ ] 利用数据库功能，实现对话数据的统计分析。
-欢迎各位在issue中提出其它需求。
+- 在原项目基础上，使用PandoraNext
+
 
 [更新日志](mark_log.md)
 
@@ -72,10 +65,9 @@
 # config.json文件内容示例
 {
   "open_ai_api_key": "",                                      # OpenAI API KEY 或 通过open_ai_name和open_ai_password自动登入；改参数不要删除
+  "open_ai_api_base": "https://ai.fakeopen.com/v1",           # PandoraNext的网站
+  "TokensTool_url",                                           # tokenstool网站获取pool_token
   "model": "gpt-3.5-turbo",                                   # 模型名称。当use_azure_chatgpt为true时，其名称为Azure上model deployment名称
-  "open_ai_name": "",                                         # 用OpenAI API KEY的方式，无需填写chatgpt账户（不支持微软、google、苹果账户登入方式）
-  "open_ai_password": "",                                     # 和chatgpt密码
-  "open_ai_api_base": "https://ai.fakeopen.com/v1",           # 账户密码登入的方式，需要填写openai api base，为 https://ai.fakeopen.com/v1 而非 https://api.openai.com/v1
   "unique_name": "",                                          # 自定义一个识别码，用于让通过账户密码方式时生成的openai api key相同，再使用账户密码时必填
   "proxy": "",                                                # 代理客户端的ip和端口，国内环境开启代理的需要填写该项，如 "127.0.0.1:7890"
   "single_chat_prefix": ["bot", "@bot"],                      # 私聊时文本需要包含该前缀才能触发机器人回复
